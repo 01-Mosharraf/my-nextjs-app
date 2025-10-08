@@ -11,6 +11,7 @@ RUN npm run build
 FROM node:18-alpine AS runner
 WORKDIR /app
 COPY package.json package-lock.json* ./
+ENV NODE_ENV production
 RUN npm ci
 COPY --from=builder /app/.next .next
 COPY --from=builder /app/public ./public
