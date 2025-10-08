@@ -1,6 +1,8 @@
 # DevOps Internship Assessment — Next.js Application Deployment
 
-## 📘 Objective
+![Architecture Diagram](image1.png) 
+
+## Objective
 This project demonstrates how to:
 - Containerize a **Next.js application** using Docker  
 - Automate Docker image builds and pushes using **GitHub Actions** and **GitHub Container Registry (GHCR)**  
@@ -202,8 +204,6 @@ kubectl get svc
 
 ### Access the App
 minikube service my-nextjs-service
-
-![Architecture Diagram](image1.png) 
 
 ![Architecture Diagram](Screenshot1.png) 
 
