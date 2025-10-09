@@ -197,13 +197,17 @@ password: ${{ secrets.GHCR_PAT }}
 minikube start
 
 ### Apply Kubernetes Manifests
+```bash
 kubectl apply -f k8s/
-
+```
 ### Check Status
+```bash
 kubectl get pods
 kubectl get svc
+```
 
 ### Access the App
+
 minikube service my-nextjs-service
 
 ![Architecture Diagram](Screenshot1.png) 
