@@ -38,9 +38,9 @@ my-nextjs-app/
 
 ---
 
-## 🚀 Local Development
+## Local Development
 
-### 1️⃣ Install dependencies
+###  Install dependencies
 ```bash
 npm install
 ```
@@ -51,20 +51,22 @@ npm run dev
 ```
 
 Docker Setup
-1️⃣ Build Docker Image
+
+Build Docker Image
+```bash
 docker build -t my-nextjs-app .
+```
 
-2️⃣ Run the Container
+Run the Container
+```bash
 docker run -p 3000:3000 my-nextjs-app
-
+```
 
 Then visit: http://localhost:3000
-
-🧩 Dockerfile Explained
+ Dockerfile Explained
 
 Multi-stage Docker build:
 ```bash
-
 # Builder
 FROM node:18-alpine AS builder
 WORKDIR /app
@@ -88,7 +90,7 @@ CMD ["npx", "next", "start", "-p", "3000"]
 ```
 
 ### Common Build Error
-❌ Error:
+ Error:
 failed to calculate checksum ... "/app/public": not found
 
 ## Cause:
@@ -114,15 +116,7 @@ File: .github/workflows/ci.yml
 
 This workflow:
 ```bash
-
-Builds Docker image
-
-Pushes it to GitHub Container Registry (GHCR)
-
-Tags image with latest and commit SHA
-
 name: CI / Build & Push to GHCR
-
 on:
   push:
     branches: [ main ]
@@ -134,15 +128,20 @@ permissions:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set lowercase IMAGE_NAME
+        run: |
+          echo "IMAGE_NAME=ghcr.io/${OWNER,,}/${REPO,,}" >> $GITHUB_ENV
+        env:
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Set up Buildx
+      - name: Set up buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Login to GHCR
@@ -152,7 +151,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -162,6 +161,8 @@ jobs:
             ${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+
 
 ```
 
